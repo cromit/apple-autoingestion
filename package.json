@@ -1,0 +1,32 @@
+{
+  "name": "apple-autoingestion",
+  "version": "0.0.1",
+  "description": "Apple's Autoingestion tool for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "async": "~0.2.9",
+    "request": "~2.27.0",
+    "mkdirp": "~0.3.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cromit/apple-autoingestion.git"
+  },
+  "keywords": [
+    "Apple",
+    "report",
+    "autoingestion",
+    "download",
+    "sales",
+    "earnings"
+  ],
+  "author": "Seunghwan Son <cromit@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cromit/apple-autoingestion/issues"
+  },
+  "homepage": "https://github.com/cromit/apple-autoingestion"
+}
