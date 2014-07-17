@@ -1,7 +1,7 @@
-# apple-autoingestion -- Autoingestion tool for Nodejs
-===================
-
+# apple-autoingestion - Autoingestion tool for Nodejs
 It's just node version of Apple's autoingestion tool that's written in Java.
+
+[![NPM](https://nodei.co/npm/apple-autoingestion.png?downloads=true&stars=true)](https://nodei.co/npm/apple-autoingestion/)
 
 
 ## Installation
