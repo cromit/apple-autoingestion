@@ -13,7 +13,7 @@ function AutoIngestion(params) {
 
 AutoIngestion.BASE_URL = 'https://reportingitc.apple.com/autoingestion.tft';
 
-AutoIngestion.prototype.downloadReport = function(dateType, reportType, reportSubType, reportDate, downloadPath, callback) {
+AutoIngestion.prototype.downloadSalesReport = function(dateType, reportType, reportSubType, reportDate, downloadPath, callback) {
   var self = this;
   async.waterfall(
     [
