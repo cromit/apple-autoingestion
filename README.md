@@ -12,7 +12,11 @@ It's just node version of Apple's autoingestion tool that's written in Java.
 Download daily sales report
 
 ```javascript
-	var autoingestion = require("apple-autoingestion");
+	var autoingestion = require("apple-autoingestion").AutoIngestion({
+		username: "userid",
+      		password: "password",
+      		vendorId: "vendorid"
+	});
 	autoingestion.downloadSalesReport("Daily", "Sales", "Summary", "20140714", "./download", function (error, filePath) {
   		if (!error) {
 		    console.log("Download finished:" + filePath);
@@ -25,7 +29,11 @@ Download daily sales report
 Download earnings report
 
 ```javascript
-	var autoingestion = require("apple-autoingestion");
+	var autoingestion = require("apple-autoingestion").AutoIngestion({
+		username: "userid",
+      		password: "password",
+      		vendorId: "vendorid"
+	});
 	autoingestion.downloadEarningsReport("AU", 2014, 8, "./download", function (error, filePath) {
   		if (!error) {
 		    console.log("Download finished:" + filePath);
