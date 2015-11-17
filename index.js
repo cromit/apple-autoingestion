@@ -112,6 +112,8 @@ AutoIngestion.prototype._download = function(requestParams, downloadPath, callba
     if (response.statusCode == 200) {
       if (response.headers.errormsg !== undefined && response.headers.errormsg !== null) {
         callback(new Error(response.headers.errormsg));
+      } else if(typeof response.headers.filename == 'undefined') {
+        callback(new Error('No report available.'));
       } else {
         downloadFilePath = path.join(downloadPath, response.headers.filename);
 
