@@ -1,7 +1,7 @@
-var autoingestion = require("./index.js").AutoIngestion({
-  username: "username"
+const autoingestion = require("./index.js").AutoIngestion({
+  username: "username",
   password: "password",
-  vendorId: "vendorid"
+  vendorId: "vendorid",
 });
 
 
