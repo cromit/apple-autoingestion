@@ -1,7 +1,7 @@
-const autoingestion = require("./index.js").AutoIngestion({
-  username: "username",
-  password: "password",
-  vendorId: "vendorid",
+const autoingestion = require('./index.js').AutoIngestion({
+    username: 'username',
+    password: 'password',
+    vendorId: 'vendorid',
 });
 
 
@@ -15,9 +15,9 @@ autoingestion.downloadSalesReport("Daily", "Sales", "Summary", "20140714", "./do
 });
 */
 
-autoingestion.downloadEarningsReport("AU", 2014, 8, "./download", function (error, filePath) {
+autoingestion.downloadEarningsReport('AU', 2014, 8, './download', (error, filePath) => {
   if (!error) {
-    console.log("Download finished:" + filePath);
+      console.log(`Download finished:${filePath}`);
   } else {
     console.log(error);
   }

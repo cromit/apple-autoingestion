@@ -1,9 +1,9 @@
-const fs = require('fs'),
-  path = require('path'),
-  request = require('request'),
-  async = require('async'),
-  mkdirp = require('mkdirp'),
-  zlib = require('zlib');
+const fs = require('fs');
+const path = require('path');
+const request = require('request');
+const async = require('async');
+const mkdirp = require('mkdirp');
+const zlib = require('zlib');
 
 function AutoIngestion(params) {
   this.username = params.username;
@@ -13,7 +13,7 @@ function AutoIngestion(params) {
 
 AutoIngestion.BASE_URL = 'https://reportingitc.apple.com/autoingestion.tft';
 
-AutoIngestion.prototype.downloadSalesReport = function(dateType, reportType, reportSubType, reportDate, downloadPath, callback) {
+AutoIngestion.prototype.downloadSalesReport = function (dateType, reportType, reportSubType, reportDate, downloadPath, callback) {
   const self = this;
   async.waterfall(
     [
@@ -21,15 +21,15 @@ AutoIngestion.prototype.downloadSalesReport = function(dateType, reportType, rep
       self._downloadReport(dateType, reportType, reportSubType, reportDate, downloadPath),
       self._unarchiveDownloadedFile(downloadPath),
     ],
-    function (error, filePath) {
+      (error, filePath) => {
       if (error) return callback(error);
-      else callback(null, filePath);
-    }
+          callback(null, filePath);
+      },
   );
 };
 
 
-AutoIngestion.prototype.downloadEarningsReport = function(regionCode, fiscalYear, fiscalPeriod, downloadPath, callback) {
+AutoIngestion.prototype.downloadEarningsReport = function (regionCode, fiscalYear, fiscalPeriod, downloadPath, callback) {
   const self = this;
   async.waterfall(
     [
@@ -37,22 +37,22 @@ AutoIngestion.prototype.downloadEarningsReport = function(regionCode, fiscalYear
       self._downloadEarnings(regionCode, fiscalYear, fiscalPeriod, downloadPath),
       self._unarchiveDownloadedFile(downloadPath),
     ],
-    function (error, filePath) {
+      (error, filePath) => {
       if (error) return callback(error);
-      else callback(null, filePath);
-    }
+          callback(null, filePath);
+      },
   );
 };
 
-AutoIngestion.prototype._checkDownloadPath = function(downloadPath) {
+AutoIngestion.prototype._checkDownloadPath = function (downloadPath) {
   return function (callback) {
-    mkdirp(downloadPath, function (error) {
+      mkdirp(downloadPath, (error) => {
       callback(error);
     });
   };
 };
 
-AutoIngestion.prototype._downloadReport = function(dateType, reportType, reportSubType, reportDate, downloadPath) {
+AutoIngestion.prototype._downloadReport = function (dateType, reportType, reportSubType, reportDate, downloadPath) {
   const self = this;
   return function (callback) {
     const postParams = {
@@ -69,15 +69,15 @@ AutoIngestion.prototype._downloadReport = function(dateType, reportType, reportS
   };
 };
 
-AutoIngestion.prototype._downloadEarnings = function(regionCode, fiscalYear, fiscalPeriod, downloadPath) {
+AutoIngestion.prototype._downloadEarnings = function (regionCode, fiscalYear, fiscalPeriod, downloadPath) {
   const self = this;
   return function (callback) {
     const postParams = {
       USERNAME: self.username,
       PASSWORD: self.password,
-      VNDNUMBER: "00" + self.vendorId,
+        VNDNUMBER: `00${self.vendorId}`,
       TYPEOFREPORT: regionCode,
-      DATETYPE: "DRR",
+        DATETYPE: 'DRR',
       REPORTTYPE: fiscalYear,
       REPORTDATE: fiscalPeriod,
     };
@@ -86,52 +86,48 @@ AutoIngestion.prototype._downloadEarnings = function(regionCode, fiscalYear, fis
   };
 };
 
-AutoIngestion.prototype._unarchiveDownloadedFile = function(downloadPath) {
+AutoIngestion.prototype._unarchiveDownloadedFile = function (downloadPath) {
   return function (filePath, callback) {
     const gunzip = zlib.createGunzip();
-    const finalFilePath = path.join(downloadPath, path.basename(filePath, ".gz"));
+      const finalFilePath = path.join(downloadPath, path.basename(filePath, '.gz'));
 
     fs.createReadStream(filePath)
       .pipe(gunzip)
       .pipe(fs.createWriteStream(finalFilePath))
-      .on('finish', function() {
+        .on('finish', () => {
         callback(null, finalFilePath);
       })
-      .on('error', function(error) {
+        .on('error', (error) => {
         callback(error);
       });
   };
 };
 
 
-AutoIngestion.prototype._download = function(requestParams, downloadPath, callback) {
-  const downloadFilePath;
+AutoIngestion.prototype._download = function (requestParams, downloadPath, callback) {
+    let downloadFilePath;
   const postRequest = request.post('https://reportingitc.apple.com/autoingestion.tft', { form: requestParams });
 
-  postRequest.on('response', function (response) {
+    postRequest.on('response', (response) => {
     if (response.statusCode === 200) {
       if (response.headers.errormsg !== undefined && response.headers.errormsg !== null) {
         callback(new Error(response.headers.errormsg));
-      } else if(typeof response.headers.filename == 'undefined') {
+      } else if (typeof response.headers.filename === 'undefined') {
         callback(new Error('No report available.'));
       } else {
         downloadFilePath = path.join(downloadPath, response.headers.filename);
 
         const fileStream = fs.createWriteStream(downloadFilePath);
-        fileStream.on('finish', function() {
-          return callback(null, downloadFilePath);
-        }).on('error', function(err) {
-          return callback(err);
-        });
+          fileStream.on('finish', () => callback(null, downloadFilePath)).on('error', err => callback(err));
 
         response.pipe(fileStream);
       }
     } else {
-      return callback(new Error("Server return code:" + response.statusCode));
+        return callback(new Error(`Server return code:${response.statusCode}`));
     }
   });
 };
 
-exports.AutoIngestion = function(params) {
+exports.AutoIngestion = function (params) {
   return new AutoIngestion(params);
 };
