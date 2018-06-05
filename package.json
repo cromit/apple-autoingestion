@@ -1,15 +1,25 @@
 {
   "name": "apple-autoingestion",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Apple's Autoingestion tool for Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint-fix": "eslint --fix *.js",
+    "lint": "eslint  *.js",
+    "audit": "if [[ \"$(npm -v | cut -d '.' -f 1)\" -gt 5 ]]; then npm audit; else echo \"please update npm\"; fi;",
+    "develop": "npm run test; npm run lint; npm run audit"
   },
   "dependencies": {
-    "async": "~2.6.0",
-    "request": "~2.83.0",
+    "async": "~2.6.1",
+    "request": "~2.87.0",
     "mkdirp": "~0.5.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-es-beautifier": "^1.0.1",
+    "eslint-plugin-import": "^2.12.0"
   },
   "repository": {
     "type": "git",
